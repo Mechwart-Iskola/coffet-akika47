@@ -1,12 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import "./popular.css";
+import PopularCard from '../popularCard/popularCard';
 
 const Popular = () => {
-  {/*Fetcheld be a popular.json-ból az adatokat és tárold le egy állapotváltozóban*/}
+  const [popularItems, setPopularItems] = useState<any[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true); 
 
-  {/*Hozz létre egy popularcard komponenst és a lementett adatokat ezen keresztül jelenítsd meg*/}
+  useEffect(() => {
+    const fetchPopularData = async () => {
+      try {
+        const response = await fetch('/popular.json'); 
+        const data = await response.json();
+        setPopularItems(data);  
+      } catch (error) {
+        console.error('Error fetching popular data:', error);  
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPopularData(); 
+  }, []); 
+
   return (
-    <div>Popular</div>
-  )
-}
+    <div className="popular">
+      <h2 className="section__title">Popular Items</h2>
 
-export default Popular
+      {loading ? (
+        <p>Loading...</p> 
+      ) : (
+        <div className="popular__container">
+          <div className="popular__coffes">
+            {popularItems.map((item, index) => (
+              <PopularCard key={index} item={item} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Popular;

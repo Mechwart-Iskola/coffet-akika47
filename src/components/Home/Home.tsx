@@ -1,16 +1,31 @@
-import React from 'react'
+import React from 'react';
+import "./home.css";
+import { homeImages } from '../../data/data';
 
 const Home = () => {
-    {/*A komponens megírásához szükséges css osztályokat a home.css-ben találod.*/}
-    
-  {/*A kép több másik képből tevődik össze ezeket egy tömbben találod a data mappában.*/}
-
-  {/*A kép hátterében egy alakzat van.*/}
-
-  {/*A gomb mutasson az about részre */}
   return (
-    <div>Home</div>
-  )
-}
+    <div className="home">
+      <h1 className="home__title">Cold Coffee</h1>
 
-export default Home
+      <div className="home__images">
+        <div className="home__shape"></div>
+
+        {homeImages.map((image, index) => (
+          <img
+            key={index}
+            src={image.src}
+            alt={image.alt}
+            className={image.className}
+          />
+        ))}
+      </div>
+
+      <div className="home__data">
+        <p className="home__description">Enjoy the finest coffee blends, carefully crafted for every taste!</p>
+        <a href="#about" className="button">Discover More</a>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

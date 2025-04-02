@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import ProductCard from '../productCard/ProductCard'; 
+import "./products.css";
 
 const Products = () => {
-  
-  {/*Fetcheld be a products.json-ból az adatokat és tárold le egy állapotváltozóban*/}
+  const [products, setProducts] = useState<any[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true);
 
-  {/*Hozz létre egy productCard komponenst és a lementett adatokat ezen keresztül jelenítsd meg*/}
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        const response = await fetch('/products.json');
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductsData();
+  }, []); 
+
   return (
-    <div>Products</div>
-  )
-}
+    <div className="products">
+      <h2 className="section__title">Our Products</h2>
 
-export default Products
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="products__container">
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Products;

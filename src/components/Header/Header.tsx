@@ -1,25 +1,49 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import "./header.css";
+import "remixicon/fonts/remixicon.css";
 
 const Header = () => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [hasShadow, setHasShadow] = useState(false);
 
-  
-    {/*Hozz létre egy boolean állapotváltozót. Értéke alapján hozzáadja a nav_menu osztállyal ellátott elemhez a show-menu osztályt.*/}
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 50) {
+        setHasShadow(true);
+      } else {
+        setHasShadow(false);
+      }
+    };
 
-    {/*Hozz létre egy állapotváltozót boolean típussal, amely azt figyeli, hogy kell-e árnyékot állítani a headernek. */}
+    window.addEventListener('scroll', handleScroll);
 
-    {/* Ha 50 px-rel lejjebb görgetünk (window.scrollY >= 50), akkor a header osztályú elemhez adjuk hozzá a shadow-header osztályt. */}
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    {/*Generáld le a HOME, POPULAR, ABOUT US, PRODUCTS, CONTACT listaelemeket. Mindegyik a megfelelő helyre mutasson az oldalon*/}
-        
-    {/*A szükséges css osztályokat megtalálod a header.css - ben.*/}
+  const toggleMenu = () => {
+    setShowMenu((prevState) => !prevState);
+  };
 
-    {/*importáld a remixicont: import "remixicon/fonts/remixicon.css"; */}
+  return (
+    <header className={`header ${hasShadow ? 'shadow-header' : ''}`}>
+      <div className="nav__logo">
+        <h1>My Website</h1>
+      </div>
+      <div className="nav__toggle" onClick={toggleMenu}>
+        <i className={showMenu ? 'ri-close-large-line nav__close' : 'ri-apps-2-fill'}></i>
+      </div>
 
-    {/*close ikon osztálya: ri-close-large-line */}
+      <nav className={`nav__menu ${showMenu ? 'show-menu' : ''}`}>
+        <ul className="nav__list">
+          <li><a href="#home" className="nav__link">HOME</a></li>
+          <li><a href="#popular" className="nav__link">POPULAR</a></li>
+          <li><a href="#about-us" className="nav__link">ABOUT US</a></li>
+          <li><a href="#products" className="nav__link">PRODUCTS</a></li>
+          <li><a href="#contact" className="nav__link">CONTACT</a></li>
+        </ul>
+      </nav>
+    </header>
+  );
+};
 
-    {/*toggle ikon osztálya: ri-apps-2-fill */}
-
-    return()
-}
-
-export default Header
+export default Header;
